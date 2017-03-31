@@ -5,7 +5,7 @@ Set width or height of divders between items of RecyclerView with item type
 
 但是，完美主义的我认为这样的方法是不优雅的！
 
-遂为RecyclerView实现了一个自定义ItemDecoration，我们可以设置横向和纵向的间距，同时可以设置边缘是否也设置间距（上下边缘间距等于横向间距，左右边缘间距等于纵向间距）。同时，我们还可以为不同的item type设置不同的间距，完美的不要不要的！
+遂为RecyclerView实现了一个自定义ItemDecoration，我们可以设置横向和纵向的间距，同时可以设置边缘是否也设置间距（上下边缘间距等于横向间距，左右边缘间距等于纵向间距）。同时，我们还可以为不同的item type设置不同的间距，完美的不要不要的！支持LinearLayoutManager，GridLayoutManager和StaggeredGridLayoutManager，随便你怎么设。
 
 ### 用法
 
@@ -29,3 +29,6 @@ private boolean hasHorizontalEdge; // 是否给上下边缘设置间距
 ```
 mBrandRecyclerView.addItemDecoration(new SCommonItemDecoration(propMap));
 ```
+
+
+不多说了，不懂的看sample吧。
