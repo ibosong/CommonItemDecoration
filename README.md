@@ -5,7 +5,11 @@ Set width or height of dividers between items of RecyclerView with item type
 
 但是，完美主义的我认为这样的方法是不优雅的，不全面的！
 
-遂为RecyclerView实现了一个自定义ItemDecoration：SCommonItemDecoration，我们可以设置横向和纵向的间距，同时可以设置边缘是否也设置间距（上下边缘间距等于横向间距，左右边缘间距等于纵向间距）。支持LinearLayoutManager，GridLayoutManager和StaggeredGridLayoutManager，也支持横向或纵向，随便你怎么设。同时，为了让SCommonItemDecoration更有意义，我还实现了为不同的item type设置不同的间距，完美的不要不要的！
+遂为RecyclerView实现了一个自定义ItemDecoration：SCommonItemDecoration，我们可以设置横向和纵向的间距，同时可以设置边缘是否也设置间距（上下边缘间距等于横向间距，左右边缘间距等于纵向间距）。支持LinearLayoutManager，GridLayoutManager和StaggeredGridLayoutManager，也支持横向或纵向，随便你怎么设。你说，这个很简单啊，在getItemOffsets方法中给每个item的outRect设置相同的`right`，在最后一项的时候不设置right就行了，这样每个item间的间距都是一样的。是的，这样可以。
+
+但是，这会有个问题，就是最后一个item的宽（或高）和其他项不一致！因为设置的outRect是占用item本身的空间的。
+
+所以，我这个SCommonItemDecoration的优势，就是不但间距相同，每个item的宽（或高）也相同。同时，为了让SCommonItemDecoration更有意义，我还实现了为不同的item type设置不同的间距，颇费。
 
 ### 用法
 
