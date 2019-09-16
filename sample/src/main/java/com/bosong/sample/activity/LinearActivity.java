@@ -1,10 +1,9 @@
 package com.bosong.sample.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 
 import com.bosong.commonitemdecoration.SCommonItemDecoration;
 import com.bosong.sample.R;
@@ -22,7 +21,7 @@ public class LinearActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_linear);
-        mBrandRecyclerView = (RecyclerView) findViewById(R.id.rv_brand_list);
+        mBrandRecyclerView = findViewById(R.id.rv_brand_list);
 
         initNormalAdapter();
     }
@@ -42,16 +41,16 @@ public class LinearActivity extends AppCompatActivity {
 
         int verticalSpace = Utils.dip2px(this, 15);
         int horizontalSpace = Utils.dip2px(this, 25);
-        SparseArray<SCommonItemDecoration.ItemDecorationProps> propMap = new SparseArray<>();
-        SCommonItemDecoration.ItemDecorationProps prop1 =
-                new SCommonItemDecoration.ItemDecorationProps(horizontalSpace, verticalSpace, false, true);
-        propMap.put(VerticalAdapter.TYPE_1, prop1);
 
-        verticalSpace = Utils.dip2px(this, 5);
-        horizontalSpace = Utils.dip2px(this, 5);
-        SCommonItemDecoration.ItemDecorationProps prop2 =
-                new SCommonItemDecoration.ItemDecorationProps(horizontalSpace, verticalSpace, true, true);
-        propMap.put(VerticalAdapter.TYPE_2, prop2);
-        mBrandRecyclerView.addItemDecoration(new SCommonItemDecoration(propMap));
+
+        mBrandRecyclerView.addItemDecoration(
+                SCommonItemDecoration.builder()
+                .type(VerticalAdapter.TYPE_1)
+                .prop(verticalSpace, horizontalSpace, true, false)
+                .buildType()
+                .type(VerticalAdapter.TYPE_2)
+                .prop(Utils.dip2px(this, 5), Utils.dip2px(this, 5), true, true)
+                .buildType()
+                .build());
     }
 }

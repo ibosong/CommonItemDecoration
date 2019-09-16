@@ -17,6 +17,7 @@
 package com.bosong.commonitemdecoration;
 
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -31,16 +32,29 @@ import android.view.View;
  */
 
 public class SCommonItemDecoration extends RecyclerView.ItemDecoration {
+
+    public static ItemDecorationBuilder builder() {
+        return new ItemDecorationBuilder();
+    }
+
     private SparseArray<ItemDecorationProps> mPropMap; // itemType -> prop
 
-    public SCommonItemDecoration(SparseArray<ItemDecorationProps> propMap) {
+    SCommonItemDecoration(SparseArray<ItemDecorationProps> propMap) {
         mPropMap = propMap;
     }
 
+    SparseArray<ItemDecorationProps> getPropMap() {
+        return mPropMap;
+    }
+
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
+                               @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         int position = parent.getChildAdapterPosition(view);
         RecyclerView.Adapter adapter = parent.getAdapter();
+        if (adapter == null) {
+            return;
+        }
         int itemType = adapter.getItemViewType(position);
 
         ItemDecorationProps props;
@@ -55,7 +69,7 @@ public class SCommonItemDecoration extends RecyclerView.ItemDecoration {
         int spanIndex = 0;
         int spanSize = 1;
         int spanCount = 1;
-        int orientation = OrientationHelper.VERTICAL;
+        int orientation = RecyclerView.VERTICAL;
         if(parent.getLayoutManager() instanceof GridLayoutManager){
             GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) view.getLayoutParams();
             spanIndex = lp.getSpanIndex();
@@ -136,32 +150,129 @@ public class SCommonItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public static class ItemDecorationProps {
-        private int verticalSpace;
-        private int horizontalSpace;
-        private boolean hasVerticalEdge;
-        private boolean hasHorizontalEdge;
+        /**
+         * Space in top or bottom between items
+         * 上下间距
+         */
+        private int mVerticalSpace;
+        /**
+         * Space in left or right between items
+         * 左右间距
+         */
+        private int mHorizontalSpace;
+        /**
+         * If this type of items has top and bottom space
+         * 是否包含上下边距
+         */
+        private boolean mHasVerticalEdge;
+        /**
+         * f this type of items has left and right space
+         * 是否包含左右边距
+         */
+        private boolean mHasHorizontalEdge;
+
+        ItemDecorationProps() {
+
+        }
 
         public ItemDecorationProps(int horizontalSpace, int verticalSpace, boolean hasHorizontalEdge, boolean hasVerticalEdge) {
-            this.verticalSpace = verticalSpace;
-            this.horizontalSpace = horizontalSpace;
-            this.hasHorizontalEdge = hasHorizontalEdge;
-            this.hasVerticalEdge = hasVerticalEdge;
+            this.mVerticalSpace = verticalSpace;
+            this.mHorizontalSpace = horizontalSpace;
+            this.mHasHorizontalEdge = hasHorizontalEdge;
+            this.mHasVerticalEdge = hasVerticalEdge;
         }
 
-        public int getHorizontalSpace() {
-            return this.horizontalSpace;
+        int getHorizontalSpace() {
+            return this.mHorizontalSpace;
         }
 
-        public int getVerticalSpace() {
-            return this.verticalSpace;
+        int getVerticalSpace() {
+            return this.mVerticalSpace;
         }
 
-        public boolean getHasHorizontalEdge() {
-            return this.hasHorizontalEdge;
+        boolean getHasHorizontalEdge() {
+            return this.mHasHorizontalEdge;
         }
 
-        public boolean getHasVerticalEdge() {
-            return this.hasVerticalEdge;
+        boolean getHasVerticalEdge() {
+            return this.mHasVerticalEdge;
+        }
+
+        void setVerticalSpace(int verticalSpace) {
+            mVerticalSpace = verticalSpace;
+        }
+
+        void setHorizontalSpace(int horizontalSpace) {
+            mHorizontalSpace = horizontalSpace;
+        }
+
+        void setHasVerticalEdge(boolean hasVerticalEdge) {
+            mHasVerticalEdge = hasVerticalEdge;
+        }
+
+        void setHasHorizontalEdge(boolean hasHorizontalEdge) {
+            mHasHorizontalEdge = hasHorizontalEdge;
+        }
+    }
+
+    public static class ItemDecorationBuilder {
+        private SparseArray<ItemDecorationProps> mPropMap = new SparseArray<>(); // itemType -> prop
+
+        SparseArray<ItemDecorationProps> getPropMap() {
+            return mPropMap;
+        }
+
+        public ItemType type(int type) {
+            return new ItemType(type, this);
+        }
+
+        public SCommonItemDecoration build() {
+            return new SCommonItemDecoration(mPropMap);
+        }
+    }
+
+    public static class ItemType {
+        private int mType;
+        private ItemDecorationProps mProps = new ItemDecorationProps();
+
+        private ItemDecorationBuilder mBuilder;
+
+        ItemType(int type, ItemDecorationBuilder builder) {
+            mType = type;
+            mBuilder = builder;
+        }
+
+        public ItemType prop(int verticalSpace, int horizontalSpace, boolean hasVerticalEdge, boolean hasHorizontalEdge) {
+            mProps.setVerticalSpace(verticalSpace);
+            mProps.setHorizontalSpace(horizontalSpace);
+            mProps.setHasVerticalEdge(hasVerticalEdge);
+            mProps.setHasHorizontalEdge(hasHorizontalEdge);
+            return this;
+        }
+
+        public ItemType verticalSpace(int space) {
+            mProps.setVerticalSpace(space);
+            return this;
+        }
+
+        public ItemType horizontalSpace(int space) {
+            mProps.setHorizontalSpace(space);
+            return this;
+        }
+
+        public ItemType hasVerticalEdge(boolean hasEdge) {
+            mProps.setHasVerticalEdge(hasEdge);
+            return this;
+        }
+
+        public ItemType hasHorizontalEdge(boolean hasEdge) {
+            mProps.setHasHorizontalEdge(hasEdge);
+            return this;
+        }
+
+        public ItemDecorationBuilder buildType() {
+            mBuilder.getPropMap().put(mType, mProps);
+            return mBuilder;
         }
     }
 }

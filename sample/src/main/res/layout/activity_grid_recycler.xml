@@ -9,7 +9,11 @@
         android:id="@+id/rv_brand_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        tools:listitem="@layout/item_vertical_brand1"
+        tools:itemCount="20"
+        tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+        tools:spanCount="4">
 
     </android.support.v7.widget.RecyclerView>
 </LinearLayout>

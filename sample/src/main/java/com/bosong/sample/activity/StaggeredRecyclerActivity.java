@@ -1,10 +1,10 @@
 package com.bosong.sample.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.SparseArray;
 
 import com.bosong.commonitemdecoration.SCommonItemDecoration;
 import com.bosong.sample.R;
@@ -23,7 +23,7 @@ public class StaggeredRecyclerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staggered_recycler);
-        mBrandRecyclerView = (RecyclerView) findViewById(R.id.rv_brand_list);
+        mBrandRecyclerView = findViewById(R.id.rv_brand_list);
 
         initNormalAdapter();
     }
@@ -42,7 +42,7 @@ public class StaggeredRecyclerActivity extends AppCompatActivity {
 
         mBrandRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 if(newState == RecyclerView.SCROLL_STATE_IDLE){
                     // 在item重排后，重新计算边框
                     mBrandRecyclerView.invalidateItemDecorations();
@@ -50,18 +50,15 @@ public class StaggeredRecyclerActivity extends AppCompatActivity {
             }
         });
 
-        int verticalSpace = Utils.dip2px(this, 15);
-        int horizontalSpace = Utils.dip2px(this, 25);
-        SparseArray<SCommonItemDecoration.ItemDecorationProps> propMap = new SparseArray<>();
-        SCommonItemDecoration.ItemDecorationProps prop1 =
-                new SCommonItemDecoration.ItemDecorationProps(horizontalSpace, verticalSpace, true, true);
-        propMap.put(VerticalAdapter.TYPE_1, prop1);
-
-        verticalSpace = Utils.dip2px(this, 5);
-        horizontalSpace = Utils.dip2px(this, 5);
-        SCommonItemDecoration.ItemDecorationProps prop2 =
-                new SCommonItemDecoration.ItemDecorationProps(horizontalSpace, verticalSpace, true, true);
-        propMap.put(VerticalAdapter.TYPE_2, prop2);
-        mBrandRecyclerView.addItemDecoration(new SCommonItemDecoration(propMap));
+        mBrandRecyclerView.addItemDecoration(
+                SCommonItemDecoration.builder()
+                .type(VerticalAdapter.TYPE_1)
+                .prop(Utils.dip2px(this, 15), Utils.dip2px(this, 25), true, true)
+                .buildType()
+                .type(VerticalAdapter.TYPE_2)
+                .prop(Utils.dip2px(this, 5), Utils.dip2px(this, 5), true, true)
+                .buildType()
+                .build()
+        );
     }
 }
