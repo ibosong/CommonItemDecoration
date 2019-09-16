@@ -106,25 +106,17 @@ spanCount = 1;
 
 ### 用法
 
-先构建一个SCommonItemDecoration.ItemDecorationProps的SparseArray列表，
-
-```
-SparseArray<SCommonItemDecoration.ItemDecorationProps> propMap = new SparseArray<>();
-```
-
-为其添加项目，其中的每一项是一个item type对应一个ItemDecorationProps对象，ItemDecorationProps包含属性：
-
-```
-private int verticalSpace; // 纵向间距
-private int horizontalSpace; // 横向间距
-private boolean hasVerticalEdge; // 是否给左右边缘设置间距
-private boolean hasHorizontalEdge; // 是否给上下边缘设置间距
-```
-
-然后构建SCommonItemDecoration对象并设置给RecyclerView
-
-```
-mBrandRecyclerView.addItemDecoration(new SCommonItemDecoration(propMap));
+``` java
+mRecyclerView.addItemDecoration(
+                SCommonItemDecoration.builder()
+                        .type(TYPE_1)
+                        .prop(verticalSpace, horizaontalSpace, hasVerticalEdge, hasHorizontalEdge)
+                        .buildType()
+                        .type(TYPE_2)
+                        .prop(verticalSpace, horizaontalSpace, hasVerticalEdge, hasHorizontalEdge)
+                        .buildType()
+                        .build()
+        );
 ```
 
 不多说了，不懂的看sample吧。
