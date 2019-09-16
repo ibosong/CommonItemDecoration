@@ -8,25 +8,17 @@ So this `SCommonItemDecoration` is the best way. It supports LinearLayoutManager
 
 ### Usage
 
-You need first initailize a `SparseArray` of `SCommonItemDecoration.ItemDecorationProps` which contains properties for different type of items.
-
-```
-SparseArray<SCommonItemDecoration.ItemDecorationProps> propMap = new SparseArray<>();
-```
-
-`SCommonItemDecoration.ItemDecorationProps` inculdes these fields:
-
-```
-private int verticalSpace; 
-private int horizontalSpace; 
-private boolean hasVerticalEdge; 
-private boolean hasHorizontalEdge;
-```
-
-After set these fields of `ItemDecorationProps`, new a `SCommonItemDecoration` and set it to the RecyclerView:
-
-```
-mBrandRecyclerView.addItemDecoration(new SCommonItemDecoration(propMap));
+``` java
+mRecyclerView.addItemDecoration(
+                SCommonItemDecoration.builder()
+                        .type(TYPE_1)
+                        .prop(verticalSpace, horizaontalSpace, hasVerticalEdge, hasHorizontalEdge)
+                        .buildType()
+                        .type(TYPE_2)
+                        .prop(verticalSpace, horizaontalSpace, hasVerticalEdge, hasHorizontalEdge)
+                        .buildType()
+                        .build()
+        );
 ```
 
 That's all, enjoy youself.
