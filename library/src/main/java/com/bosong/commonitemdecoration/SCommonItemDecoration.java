@@ -92,7 +92,7 @@ public class SCommonItemDecoration extends RecyclerView.ItemDecoration {
         // Last position on the last row 上一行的最后一个位置
         int preRowPos = position > spanIndex ? position - (1 + spanIndex) : -1;
         // First position on the next row 下一行的第一个位置
-        int nextRowPos = position < adapter.getItemCount() - (spanCount - spanIndex) ? position + (spanCount - spanIndex) : -1;
+        int nextRowPos = position < adapter.getItemCount() - (spanCount - spanIndex) ? position + (spanCount - spanIndex) - spanSize + 1 : -1;
         isFirstRowOrColumn = position == 0 || prePos == -1 || itemType != adapter.getItemViewType(prePos) ||
                 preRowPos == -1 || itemType != adapter.getItemViewType(preRowPos);
         isLastRowOrColumn = position == adapter.getItemCount() - 1 || nextPos == -1 || itemType != adapter.getItemViewType(nextPos) ||
@@ -102,47 +102,47 @@ public class SCommonItemDecoration extends RecyclerView.ItemDecoration {
 
         if (orientation == GridLayoutManager.VERTICAL) {
 
-            if (props.getHasVerticalEdge()) {
-                left = props.getVerticalSpace() * (spanCount - spanIndex) / spanCount;
-                right = props.getVerticalSpace() * (spanIndex + (spanSize - 1) + 1) / spanCount;
+            if (props.getHasLeftRightEdge()) {
+                left = props.getLeftRightSpace() * (spanCount - spanIndex) / spanCount;
+                right = props.getLeftRightSpace() * (spanIndex + (spanSize - 1) + 1) / spanCount;
             } else {
-                left = props.getVerticalSpace() * spanIndex / spanCount;
-                right = props.getVerticalSpace() * (spanCount - (spanIndex + spanSize - 1) - 1) / spanCount;
+                left = props.getLeftRightSpace() * spanIndex / spanCount;
+                right = props.getLeftRightSpace() * (spanCount - (spanIndex + spanSize - 1) - 1) / spanCount;
             }
 
             if (isFirstRowOrColumn) { // First row
-                if (props.getHasHorizontalEdge()) {
-                    top = props.getHorizontalSpace();
+                if (props.getHasTopBottomEdge()) {
+                    top = props.getTopBottomSpace();
                 }
             }
             if (isLastRowOrColumn) { // Last row
-                if (props.getHasHorizontalEdge()) {
-                    bottom = props.getHorizontalSpace();
+                if (props.getHasTopBottomEdge()) {
+                    bottom = props.getTopBottomSpace();
                 }
             } else {
-                bottom = props.getHorizontalSpace();
+                bottom = props.getTopBottomSpace();
             }
         } else {
 
-            if (props.getHasHorizontalEdge()) {
-                top = props.getHorizontalSpace() * (spanCount - spanIndex) / spanCount;
-                bottom = props.getHorizontalSpace() * (spanIndex + (spanSize - 1) + 1) / spanCount;
+            if (props.getHasTopBottomEdge()) {
+                top = props.getTopBottomSpace() * (spanCount - spanIndex) / spanCount;
+                bottom = props.getTopBottomSpace() * (spanIndex + (spanSize - 1) + 1) / spanCount;
             } else {
-                top = props.getHorizontalSpace() * spanIndex / spanCount;
-                bottom = props.getHorizontalSpace() * (spanCount - (spanIndex + spanSize - 1) - 1) / spanCount;
+                top = props.getTopBottomSpace() * spanIndex / spanCount;
+                bottom = props.getTopBottomSpace() * (spanCount - (spanIndex + spanSize - 1) - 1) / spanCount;
             }
 
             if (isFirstRowOrColumn) { // First column
-                if (props.getHasVerticalEdge()) {
-                    left = props.getVerticalSpace();
+                if (props.getHasLeftRightEdge()) {
+                    left = props.getLeftRightSpace();
                 }
             }
             if (isLastRowOrColumn) { // Last column
-                if (props.getHasVerticalEdge()) {
-                    right = props.getVerticalSpace();
+                if (props.getHasLeftRightEdge()) {
+                    right = props.getLeftRightSpace();
                 }
             } else {
-                right = props.getVerticalSpace();
+                right = props.getLeftRightSpace();
             }
         }
 
@@ -151,67 +151,67 @@ public class SCommonItemDecoration extends RecyclerView.ItemDecoration {
 
     public static class ItemDecorationProps {
         /**
-         * Space in top or bottom between items
-         * 上下间距
-         */
-        private int mVerticalSpace;
-        /**
          * Space in left or right between items
          * 左右间距
          */
-        private int mHorizontalSpace;
+        private int mLeftRightSpace;
+        /**
+         * Space in top or bottom between items
+         * 上下间距
+         */
+        private int mTopBottomSpace;
+        /**
+         * If this type of items has left and right space
+         * 是否包含左右边距
+         */
+        private boolean mHasLeftRightEdge;
         /**
          * If this type of items has top and bottom space
          * 是否包含上下边距
          */
-        private boolean mHasVerticalEdge;
-        /**
-         * f this type of items has left and right space
-         * 是否包含左右边距
-         */
-        private boolean mHasHorizontalEdge;
+        private boolean mHasTopBottomEdge;
 
         ItemDecorationProps() {
 
         }
 
-        public ItemDecorationProps(int horizontalSpace, int verticalSpace, boolean hasHorizontalEdge, boolean hasVerticalEdge) {
-            this.mVerticalSpace = verticalSpace;
-            this.mHorizontalSpace = horizontalSpace;
-            this.mHasHorizontalEdge = hasHorizontalEdge;
-            this.mHasVerticalEdge = hasVerticalEdge;
+        public ItemDecorationProps(int topBottomSpace, int leftRightSpace, boolean hasTopBottomEdge, boolean hasLeftRightEdge) {
+            this.mLeftRightSpace = leftRightSpace;
+            this.mTopBottomSpace = topBottomSpace;
+            this.mHasTopBottomEdge = hasTopBottomEdge;
+            this.mHasLeftRightEdge = hasLeftRightEdge;
         }
 
-        int getHorizontalSpace() {
-            return this.mHorizontalSpace;
+        int getTopBottomSpace() {
+            return this.mTopBottomSpace;
         }
 
-        int getVerticalSpace() {
-            return this.mVerticalSpace;
+        int getLeftRightSpace() {
+            return this.mLeftRightSpace;
         }
 
-        boolean getHasHorizontalEdge() {
-            return this.mHasHorizontalEdge;
+        boolean getHasTopBottomEdge() {
+            return this.mHasTopBottomEdge;
         }
 
-        boolean getHasVerticalEdge() {
-            return this.mHasVerticalEdge;
+        boolean getHasLeftRightEdge() {
+            return this.mHasLeftRightEdge;
         }
 
-        void setVerticalSpace(int verticalSpace) {
-            mVerticalSpace = verticalSpace;
+        void setLeftRightSpace(int leftRightSpace) {
+            mLeftRightSpace = leftRightSpace;
         }
 
-        void setHorizontalSpace(int horizontalSpace) {
-            mHorizontalSpace = horizontalSpace;
+        void setTopBottomSpace(int topBottomSpace) {
+            mTopBottomSpace = topBottomSpace;
         }
 
-        void setHasVerticalEdge(boolean hasVerticalEdge) {
-            mHasVerticalEdge = hasVerticalEdge;
+        void setHasLeftRightEdge(boolean hasLeftRightEdge) {
+            mHasLeftRightEdge = hasLeftRightEdge;
         }
 
-        void setHasHorizontalEdge(boolean hasHorizontalEdge) {
-            mHasHorizontalEdge = hasHorizontalEdge;
+        void setHasTopBottomEdge(boolean hasTopBottomEdge) {
+            mHasTopBottomEdge = hasTopBottomEdge;
         }
     }
 
@@ -242,31 +242,31 @@ public class SCommonItemDecoration extends RecyclerView.ItemDecoration {
             mBuilder = builder;
         }
 
-        public ItemType prop(int verticalSpace, int horizontalSpace, boolean hasVerticalEdge, boolean hasHorizontalEdge) {
-            mProps.setVerticalSpace(verticalSpace);
-            mProps.setHorizontalSpace(horizontalSpace);
-            mProps.setHasVerticalEdge(hasVerticalEdge);
-            mProps.setHasHorizontalEdge(hasHorizontalEdge);
+        public ItemType prop(int leftRightSpace, int topBottomSpace, boolean hasLeftRightEdge, boolean hasTopBottomEdge) {
+            mProps.setLeftRightSpace(leftRightSpace);
+            mProps.setTopBottomSpace(topBottomSpace);
+            mProps.setHasLeftRightEdge(hasLeftRightEdge);
+            mProps.setHasTopBottomEdge(hasTopBottomEdge);
             return this;
         }
 
-        public ItemType verticalSpace(int space) {
-            mProps.setVerticalSpace(space);
+        public ItemType leftRightSpace(int space) {
+            mProps.setLeftRightSpace(space);
             return this;
         }
 
-        public ItemType horizontalSpace(int space) {
-            mProps.setHorizontalSpace(space);
+        public ItemType topBottomSpace(int space) {
+            mProps.setTopBottomSpace(space);
             return this;
         }
 
-        public ItemType hasVerticalEdge(boolean hasEdge) {
-            mProps.setHasVerticalEdge(hasEdge);
+        public ItemType hasLeftRightEdge(boolean hasEdge) {
+            mProps.setHasLeftRightEdge(hasEdge);
             return this;
         }
 
-        public ItemType hasHorizontalEdge(boolean hasEdge) {
-            mProps.setHasHorizontalEdge(hasEdge);
+        public ItemType hasTopBottomEdge(boolean hasEdge) {
+            mProps.setHasTopBottomEdge(hasEdge);
             return this;
         }
 

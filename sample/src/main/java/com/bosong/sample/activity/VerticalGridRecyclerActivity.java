@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.bosong.commonitemdecoration.SCommonItemDecoration;
 import com.bosong.sample.R;
+import com.bosong.sample.Utils;
 import com.bosong.sample.adapter.VerticalAdapter;
 import com.bosong.sample.model.BrandData;
 
@@ -50,15 +52,15 @@ public class VerticalGridRecyclerActivity extends AppCompatActivity {
         mMyAdapter = new VerticalAdapter(data);
         mBrandRecyclerView.setAdapter(mMyAdapter);
 
-//        mBrandRecyclerView.addItemDecoration(
-//                SCommonItemDecoration.builder()
-//                        .type(VerticalAdapter.TYPE_1)
-//                        .prop(Utils.dip2px(this, 15), Utils.dip2px(this, 25), true, true)
-//                        .buildType()
-//                        .type(VerticalAdapter.TYPE_2)
-//                        .prop(Utils.dip2px(this, 5), Utils.dip2px(this, 5), true, true)
-//                        .buildType()
-//                        .build()
-//        );
+        mBrandRecyclerView.addItemDecoration(
+                SCommonItemDecoration.builder()
+                        .type(VerticalAdapter.TYPE_1)
+                        .prop(Utils.dip2px(this, 15), Utils.dip2px(this, 25), true, true)
+                        .buildType()
+                        .type(VerticalAdapter.TYPE_2)
+                        .prop(Utils.dip2px(this, 5), Utils.dip2px(this, 5), true, true)
+                        .buildType()
+                        .build()
+        );
     }
 }
